@@ -4,6 +4,7 @@ import { getFilmDetailFromApi,getImageFromApi } from '../API/TMDBApi'
 import moment from 'moment'
 import numeral from 'numeral'
 import { connect } from 'react-redux'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 class FilmDetail extends React.Component {
 
@@ -37,7 +38,11 @@ class FilmDetail extends React.Component {
                     source={{uri: getImageFromApi(film.backdrop_path)}}
                     />
                     <Text style={styles.title_film}>{film.title}</Text>
-                    <Button title="Favoris" onPress={() => this._toggleFavorite()}></Button>
+                    <TouchableOpacity 
+                        style={styles.favorite_container} 
+                        onPress={() => this._toggleFavorite()}>
+                        {this._displayFavoriteImage()}
+                    </TouchableOpacity>
                     <Text style={styles.description_film}>{film.overview}</Text>
                     <Text style={styles.default_text}>Sorti le {moment(new Date(film.release_date)).format('DD/MM/YYYY')}</Text>
                     <Text style={styles.default_text}>Note : {film.vote_average}</Text>
@@ -69,9 +74,22 @@ class FilmDetail extends React.Component {
 
     componentDidUpdate() {
         //fonction qui fait partie du cycle de vie update d'un film
-        console.log(this.props.favoritesFilm)
+        //console.log(this.props.favoritesFilm)
     }
 
+    _displayFavoriteImage() {
+        var sourceImage = require('../Images/ic_favorite_border.png')
+        if(this.props.favoritesFilm.findIndex(item => item.id === this.state.film.id) !== -1){
+            //Film dans nos favoris
+            sourceImage = require('../Images/ic_favorite.png')
+        }
+        return (
+            <Image
+                style={styles.favorite_image_heart}
+                source={sourceImage}
+            />
+        )
+    }
     _toggleFavorite(){
         //Définition de l'action ici
         const action = { type: "TOGGLE_FAVORITE", value: this.state.film }
@@ -79,7 +97,7 @@ class FilmDetail extends React.Component {
     }
 
     render() {
-        console.log(this.props)
+        //console.log(this.props)
         return (
             <View style={styles.main_container}>
                 {this._displayLoading()}
@@ -103,6 +121,9 @@ const styles = StyleSheet.create({
     main_container: {
         flex: 1,
     },
+    favorite_container: {
+        alignItems: 'center',
+    },
     loading_container: {
         position: 'absolute',
         left: 0,
@@ -118,6 +139,10 @@ const styles = StyleSheet.create({
     image: {
         height: 180,
         margin: 2
+    },
+    favorite_image_heart: {
+        width: 45,
+        height: 40
     },
     title_film: {
         textAlign: "center",

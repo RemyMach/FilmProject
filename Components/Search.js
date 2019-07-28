@@ -3,7 +3,7 @@ import React from 'react';
 import { Text,StyleSheet, View, Button,TextInput, FlatList, ActivityIndicator } from 'react-native';
 import FilmItem from './FilmItem';
 import { getFilmsApiWithSearchedText } from '../API/TMDBApi';
-import FilmDetail from './FilmDetail';
+import { connect } from 'react-redux';
 
 class Search extends React.Component {
 
@@ -20,7 +20,7 @@ class Search extends React.Component {
         this.searchedText = "";
         this.page = 0;
         this.total_page = 0;
-        console.log('etat');
+        //console.log('etat');
     }
     _searchFilms() {
         this.page = 0;
@@ -28,7 +28,7 @@ class Search extends React.Component {
         this.setState({films: []},
         () => {
         // J'utilise la paramètre length sur mon tableau de films pour vérifier qu'il y a bien 0 film et c'est la callback de setState
-        console.log("Page : " + this.page + " / TotalPages : " + this.total_page + " / Nombre de films : " + this.state.films.length)
+        //console.log("Page : " + this.page + " / TotalPages : " + this.total_page + " / Nombre de films : " + this.state.films.length)
         this._loadFilms() 
         }
         )
@@ -67,13 +67,15 @@ class Search extends React.Component {
         this.searchedText = text;
     }
 
+    //une property et pas une méthode
     _displayDetailForFilm = (idFilm) => { //_displayDetailForFilm(idFilm) { }
         //console.log(this.props);
         this.props.navigation.navigate('FilmDetail', { idFilm: idFilm}) ;
     }
 
     render() {
-        //console.log(this.props);
+        //console.log(this.state.films);
+        console.log("------------------------------------------------------------------------------------------------");
         return (
             <View style={ styles.main_container }>
                 <TextInput placeholder="Titre du film" 
@@ -84,15 +86,27 @@ class Search extends React.Component {
                 <FlatList
                     data={this.state.films}
                     keyExtractor={(item) => item.id.toString()}
+                    extraData={this.props.favoritesFilm}
                     renderItem={
                         ({item}) => <FilmItem film={item}
-                        displayDetailForFilm={this._displayDetailForFilm} />}
+                        displayDetailForFilm={this._displayDetailForFilm}
+                        isFilmFavorite={(this.props.favoritesFilm.findIndex(film => film.id === item.id) !== -1) ? true : false}
+                        />}
                         onEndReachedThreshold={1}
                         onEndReached={() => this._loadPage()}
                 />
                 {this._displayLoading()}
             </View>
         );
+    }
+}
+
+const mapStateToProps = (state) => {
+    //return state
+    //on ne retourne que l'info du state global qui nous intéresse
+    //le nom de la variable n'est pas important on peut la nommer comme on veut
+    return {
+        favoritesFilm: state.favoritesFilm
     }
 }
 
@@ -122,4 +136,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Search;
+export default connect(mapStateToProps)(Search);

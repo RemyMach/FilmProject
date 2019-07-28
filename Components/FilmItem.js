@@ -1,12 +1,24 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
-import { getImageFromApi, getFilmDetailFromApi } from '../API/TMDBApi';
+import { getImageFromApi } from '../API/TMDBApi';
 
 class FilmItem extends React.Component {
+
+  _displayFavoriteHeart(){
+    if(this.props.isFilmFavorite){
+      return (
+        <Image
+          style={styles.favorite_image_heart}
+          source={require('../Images/ic_favorite.png')}
+        />
+      )
+    }
+  }
 
     render() {
         const displayDetailForFilm = this.props.displayDetailForFilm // équivaut pour les deux lignes à const { film, displayDetailForFilm } = this.props 
         const film = this.props.film;
+        //console.log(this.props);
         return (
             <TouchableOpacity
                 style={styles.main_container} 
@@ -17,6 +29,7 @@ class FilmItem extends React.Component {
                 />
                 <View style={styles.content_container}>
                     <View style={styles.header_container}>
+                          {this._displayFavoriteHeart()}
                         <Text style={styles.title_text}>{ film.title }</Text>
                         <Text style={styles.vote_text}>{ film.vote_average }</Text>
                     </View>
@@ -34,6 +47,14 @@ class FilmItem extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  favorite_container: {
+    
+  },
+  favorite_image_heart: {
+    width: 25,
+    height: 25,
+    marginRight: 5
+  },
   main_container: {
     height: 190,
     flexDirection: 'row'
