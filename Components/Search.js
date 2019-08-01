@@ -1,9 +1,9 @@
-import React from 'react';
+import React from 'react'
 //on imoorte l'API StyleSheet pour que ça aille plus vite
-import { Text,StyleSheet, View, Button,TextInput, FlatList, ActivityIndicator } from 'react-native';
-import FilmItem from './FilmItem';
-import { getFilmsApiWithSearchedText } from '../API/TMDBApi';
-import { connect } from 'react-redux';
+import { Text,StyleSheet, View, Button,TextInput, ActivityIndicator } from 'react-native'
+import FilmItem from './FilmItem'
+import FilmList from './FilmList'
+import { getFilmsApiWithSearchedText } from '../API/TMDBApi'
 
 class Search extends React.Component {
 
@@ -26,11 +26,11 @@ class Search extends React.Component {
         this.page = 0;
         this.total_page = 0;
         this.setState({films: []},
-        () => {
-        // J'utilise la paramètre length sur mon tableau de films pour vérifier qu'il y a bien 0 film et c'est la callback de setState
-        //console.log("Page : " + this.page + " / TotalPages : " + this.total_page + " / Nombre de films : " + this.state.films.length)
-        this._loadFilms() 
-        }
+            () => {
+            // J'utilise la paramètre length sur mon tableau de films pour vérifier qu'il y a bien 0 film et c'est la callback de setState
+            //console.log("Page : " + this.page + " / TotalPages : " + this.total_page + " / Nombre de films : " + this.state.films.length)
+            this._loadFilms() 
+            }
         )
     }
 
@@ -44,12 +44,6 @@ class Search extends React.Component {
                             isLoading: false 
                         }), this.total_page = data.total_pages,this.page = data.page
             })
-        }
-    }
-
-    _loadPage() {
-        if(this.page < this.total_page) {
-            this._loadFilms();
         }
     }
 
@@ -67,12 +61,6 @@ class Search extends React.Component {
         this.searchedText = text;
     }
 
-    //une property et pas une méthode
-    _displayDetailForFilm = (idFilm) => { //_displayDetailForFilm(idFilm) { }
-        //console.log(this.props);
-        this.props.navigation.navigate('FilmDetail', { idFilm: idFilm}) ;
-    }
-
     render() {
         //console.log(this.state.films);
         console.log("------------------------------------------------------------------------------------------------");
@@ -83,30 +71,17 @@ class Search extends React.Component {
                             onChangeText={(text) => this._searchTextInputChanged(text) } 
                             style={ styles.textinput } />
                 <Button title="Rechercher" onPress= { () => this._searchFilms() } />
-                <FlatList
-                    data={this.state.films}
-                    keyExtractor={(item) => item.id.toString()}
-                    extraData={this.props.favoritesFilm}
-                    renderItem={
-                        ({item}) => <FilmItem film={item}
-                        displayDetailForFilm={this._displayDetailForFilm}
-                        isFilmFavorite={(this.props.favoritesFilm.findIndex(film => film.id === item.id) !== -1) ? true : false}
-                        />}
-                        onEndReachedThreshold={1}
-                        onEndReached={() => this._loadPage()}
+                <FilmList
+                    films={this.state.films} // C'est bien le component Search qui récupère les films depuis l'API et on les transmet ici pour que le component FilmList les affiche
+                    navigation={this.props.navigation} // Ici on transmet les informations de navigation pour permettre au component FilmList de naviguer vers le détail d'un film
+                    loadFilms={this._loadFilms} // _loadFilm charge les films suivants, ça concerne l'API, le component FilmList va juste appeler cette méthode quand l'utilisateur aura parcouru tous les films et c'est le component Search qui lui fournira les films suivants
+                    page={this.page}
+                    totalPages={this.totalPages} // les infos page et totalPages vont être utile, côté component FilmList, pour ne pas déclencher l'évènement pour charger plus de film si on a atteint la dernière page
+                    loadFilms={this._loadFilms}
                 />
                 {this._displayLoading()}
             </View>
         );
-    }
-}
-
-const mapStateToProps = (state) => {
-    //return state
-    //on ne retourne que l'info du state global qui nous intéresse
-    //le nom de la variable n'est pas important on peut la nommer comme on veut
-    return {
-        favoritesFilm: state.favoritesFilm
     }
 }
 
@@ -136,4 +111,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default connect(mapStateToProps)(Search);
+export default Search;
