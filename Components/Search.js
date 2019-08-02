@@ -1,7 +1,6 @@
 import React from 'react'
 //on imoorte l'API StyleSheet pour que ça aille plus vite
 import { Text,StyleSheet, View, Button,TextInput, ActivityIndicator } from 'react-native'
-import FilmItem from './FilmItem'
 import FilmList from './FilmList'
 import { getFilmsApiWithSearchedText } from '../API/TMDBApi'
 
@@ -19,13 +18,15 @@ class Search extends React.Component {
         //on initialise avec des this APPAREMENT 
         this.searchedText = "";
         this.page = 0;
-        this.total_page = 0;
+        this.total_pages = 0;
         //console.log('etat');
+
+        this._loadFilms = this._loadFilms.bind(this)
     }
     _searchFilms() {
         this.page = 0;
-        this.total_page = 0;
-        this.setState({films: []},
+        this.total_pages = 0;
+        this.setState({films: [],},
             () => {
             // J'utilise la paramètre length sur mon tableau de films pour vérifier qu'il y a bien 0 film et c'est la callback de setState
             //console.log("Page : " + this.page + " / TotalPages : " + this.total_page + " / Nombre de films : " + this.state.films.length)
@@ -37,14 +38,21 @@ class Search extends React.Component {
     _loadFilms() {
         //getFilmsApiWithSearchedText("star").then(data => console.log(data));
         if(this.searchedText.length > 0){
+            console.log("jean")
             this.setState({isLoading: true})
             getFilmsApiWithSearchedText(this.searchedText,this.page+1).then(
-                data => {this.setState({ 
+                data => {console.log(data.total_pages)
+                    this.total_pages = data.total_pages
+                    this.page = data.page
+                    this.setState({ 
                             films: this.state.films.concat(data.results),
                             isLoading: false 
-                        }), this.total_page = data.total_pages,this.page = data.page
+                        })
+                        console.log("le chiffre final " + this.total_pages)
             })
+            console.log("je suis le nombre de pages" + this.total_pages);
         }
+        
     }
 
     _displayLoading() {
@@ -62,7 +70,7 @@ class Search extends React.Component {
     }
 
     render() {
-        //console.log(this.state.films);
+        console.log("je rerend " + this.total_pages);
         console.log("------------------------------------------------------------------------------------------------");
         return (
             <View style={ styles.main_container }>
@@ -70,13 +78,13 @@ class Search extends React.Component {
                             onSubmitEditing ={() => this._searchFilms()}  
                             onChangeText={(text) => this._searchTextInputChanged(text) } 
                             style={ styles.textinput } />
-                <Button title="Rechercher" onPress= { () => this._searchFilms() } />
+                <Button title="Rechercher" onPress= {() => this._searchFilms()} />
                 <FilmList
                     films={this.state.films} // C'est bien le component Search qui récupère les films depuis l'API et on les transmet ici pour que le component FilmList les affiche
                     navigation={this.props.navigation} // Ici on transmet les informations de navigation pour permettre au component FilmList de naviguer vers le détail d'un film
                     loadFilms={this._loadFilms} // _loadFilm charge les films suivants, ça concerne l'API, le component FilmList va juste appeler cette méthode quand l'utilisateur aura parcouru tous les films et c'est le component Search qui lui fournira les films suivants
                     page={this.page}
-                    totalPages={this.totalPages} // les infos page et totalPages vont être utile, côté component FilmList, pour ne pas déclencher l'évènement pour charger plus de film si on a atteint la dernière page
+                    totalPages={this.total_pages} // les infos page et totalPages vont être utile, côté component FilmList, pour ne pas déclencher l'évènement pour charger plus de film si on a atteint la dernière page
                     loadFilms={this._loadFilms}
                 />
                 {this._displayLoading()}

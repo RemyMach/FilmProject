@@ -19,7 +19,7 @@ class FilmList extends React.Component {
     }
 
     render() {
-        console.log(this.props)
+        //console.log(this.props)
         return (
             <FlatList
                 style={styles.list}
@@ -34,12 +34,13 @@ class FilmList extends React.Component {
                             />}
                 onEndReachedThreshold={1}
                 onEndReached={() => {
+                    //console.log(this.props)
                     if(this.props.page < this.props.totalPages) {
                         //On appelle la méthode loadFilm du component Search pour changer plus de films
                         this.props.loadFilms()
                     }
                 }}
-                        /> 
+            /> 
         )
     }
 
