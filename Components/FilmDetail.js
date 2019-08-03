@@ -27,9 +27,14 @@ class FilmDetail extends React.Component {
         }
     }
 
+    //display poster_path if the film doesn't have backdrop_path
     _displayLinkImage(film) {
-        if(film.backdrop_path !== undefined){
+        console.log(film)
+        if(film.backdrop_path === null){
+            console.log("passage")
             return film.poster_path
+        }else{
+            return film.backdrop_path
         }
     }
 
