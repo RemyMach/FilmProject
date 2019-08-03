@@ -5,7 +5,7 @@ import { getImageFromApi } from '../API/TMDBApi';
 class FilmItem extends React.Component {
 
   _displayFavoriteHeart(){
-    if(this.props.isFilmFavorite){
+    if(this.props.isFilmFavorite && this.props.favoriteList !== true){
       return (
         <Image
           style={styles.favorite_image_heart}
@@ -15,17 +15,27 @@ class FilmItem extends React.Component {
     }
   }
 
+  _displayImageFromApiWhenSearch(linkImage){
+    if(this.props.favoriteList !== true){
+      return(
+        <Image
+          style={styles.image}
+          source={{uri: getImageFromApi(linkImage)}}
+        />
+      )
+    }
+  }
+
     render() {
         const displayDetailForFilm = this.props.displayDetailForFilm // équivaut pour les deux lignes à const { film, displayDetailForFilm } = this.props 
         const film = this.props.film;
-        //console.log(this.props);
         return (
             <TouchableOpacity
                 style={styles.main_container} 
                 onPress={() => displayDetailForFilm(film.id)} >
                 <Image
-                style={styles.image}
-                source={{uri: getImageFromApi(film.poster_path)}}
+                  style={styles.image}
+                  source={{uri: getImageFromApi(film.poster_path)}}
                 />
                 <View style={styles.content_container}>
                     <View style={styles.header_container}>

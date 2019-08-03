@@ -12,7 +12,7 @@ class FilmDetail extends React.Component {
         super(props);
         this.state = {
             film: undefined, // Pour l'instant on n'a pas les infos du film, on initialise donc le film à undefined.
-            isLoading: true // A l'ouverture de la vue, on affiche le chargement, le temps de récupérer le détail du film
+            isLoading: false // A l'ouverture de la vue, on affiche le chargement, le temps de récupérer le détail du film
         }
     }
 
@@ -26,16 +26,24 @@ class FilmDetail extends React.Component {
             )
         }
     }
+
+    _displayLinkImage(film) {
+        if(film.backdrop_path !== undefined){
+            return film.poster_path
+        }
+    }
+
     _displayFilm() {
-        console.log("j'aime");
+        //console.log("j'aime");
         const film = this.state.film
         if(film != undefined){
         //<Text>{this.state.film.title}</Text>
+        //console.log(this.state.film.title)
             return(
                 <ScrollView style={styles.scrollview_container}>
                     <Image
                     style={styles.image}
-                    source={{uri: getImageFromApi(film.backdrop_path)}}
+                    source={{uri: getImageFromApi(this._displayLinkImage(film))}}
                     />
                     <Text style={styles.title_film}>{film.title}</Text>
                     <TouchableOpacity 
@@ -49,14 +57,14 @@ class FilmDetail extends React.Component {
                     <Text style={styles.default_text}>Nombre de votes : {film.vote_count}</Text>
                     <Text style={styles.default_text}>Budget : {numeral(film.budget).format('0,0[.]00$')}</Text>
                     <Text style={styles.default_text}>Genre(s) : 
-                    {film.genres.map(function(genre){
-                        return genre.name;
-                    }).join(" / ")
+                        {film.genres.map(function(genre){
+                            return genre.name;
+                        }).join(" / ")
                     }</Text>
                     <Text style={styles.default_text}>Companie(s) : 
-                    {film.production_companies.map(function(company){
-                        return company.name;
-                    }).join(" / ")
+                        {film.production_companies.map(function(company){
+                            return company.name;
+                        }).join(" / ")
                     }</Text>
                 </ScrollView>
             );
@@ -64,13 +72,26 @@ class FilmDetail extends React.Component {
     }
 
     componentDidMount() {
-        getFilmDetailFromApi(this.props.navigation.state.params.idFilm).then(data => {
-          this.setState({
-            film: data,
-            isLoading: false
-          })
-        })
+        const favoriteFilmIndex = this.props.favoritesFilm.findIndex(item => item.id === this.props.navigation.state.params.idFilm)
+        if (favoriteFilmIndex !== -1) { // Film déjà dans nos favoris, on a déjà son détail
+            // Pas besoin d'appeler l'API ici, on ajoute le détail stocké dans notre state global au state de notre component
+            this.setState({
+              film: this.props.favoritesFilm[favoriteFilmIndex]
+            })
+            return
+          }else{
+            // Le film n'est pas dans nos favoris, on n'a pas son détail
+            // On appelle l'API pour récupérer son détail
+            this.setState({ isLoading: true })
+            getFilmDetailFromApi(this.props.navigation.state.params.idFilm).then(data => {
+                this.setState({
+                    film: data,
+                    isLoading: false
+                })
+            })
+        }
     }
+
 
     componentDidUpdate() {
         //fonction qui fait partie du cycle de vie update d'un film

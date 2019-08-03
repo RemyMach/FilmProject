@@ -38,19 +38,17 @@ class Search extends React.Component {
     _loadFilms() {
         //getFilmsApiWithSearchedText("star").then(data => console.log(data));
         if(this.searchedText.length > 0){
-            console.log("jean")
+            //console.log("jean")
             this.setState({isLoading: true})
             getFilmsApiWithSearchedText(this.searchedText,this.page+1).then(
-                data => {console.log(data.total_pages)
+                data => { //obligé de mettre total_page et page avant sinon le state se rerend et ne fait pas les modifs pour les pages
                     this.total_pages = data.total_pages
                     this.page = data.page
                     this.setState({ 
                             films: this.state.films.concat(data.results),
                             isLoading: false 
                         })
-                        console.log("le chiffre final " + this.total_pages)
             })
-            console.log("je suis le nombre de pages" + this.total_pages);
         }
         
     }
@@ -70,8 +68,8 @@ class Search extends React.Component {
     }
 
     render() {
-        console.log("je rerend " + this.total_pages);
-        console.log("------------------------------------------------------------------------------------------------");
+        //console.log("je rerend " + this.total_pages);
+        //console.log("------------------------------------------------------------------------------------------------");
         return (
             <View style={ styles.main_container }>
                 <TextInput placeholder="Titre du film" 

@@ -13,13 +13,15 @@ class FilmList extends React.Component {
     }
 
     //une property et pas une méthode
+    //directement bind graçe à la déclaration
     _displayDetailForFilm = (idFilm) => { //_displayDetailForFilm(idFilm) { }
         //console.log(this.props);
-        this.props.navigation.navigate('FilmDetail', { idFilm: idFilm}) ;
+            return this.props.navigation.navigate('FilmDetail', { idFilm: idFilm,favoriteList: this.props.favoriteList});
     }
 
     render() {
         //console.log(this.props)
+        //console.log("film favories" + this.props.favoriteList);
         return (
             <FlatList
                 style={styles.list}
@@ -30,12 +32,13 @@ class FilmList extends React.Component {
                 ({item}) => <FilmItem 
                                 film={item}
                                 displayDetailForFilm={this._displayDetailForFilm}
+                                favoriteList={this.props.favoriteList}
                                 isFilmFavorite={(this.props.favoritesFilm.findIndex(film => film.id === item.id) !== -1) ? true : false}
                             />}
                 onEndReachedThreshold={1}
                 onEndReached={() => {
                     //console.log(this.props)
-                    if(this.props.page < this.props.totalPages) {
+                    if(this.props.page < this.props.totalPages && this.props.favoriteList !== true) {
                         //On appelle la méthode loadFilm du component Search pour changer plus de films
                         this.props.loadFilms()
                     }

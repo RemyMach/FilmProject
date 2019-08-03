@@ -1,14 +1,38 @@
 import React from 'react'
-import { StyleSheet, Text } from 'react-native'
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
+import FilmList from './FilmList'
 
 class Favorites extends React.Component {
+
+    constructor(props){
+        super(props)
+    }
+
     render() {
+        //console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        //console.log(this.props.favoritesFilm)   
         return (
-            <Text>Mes Favoris</Text>
-        )
+            <View style={ styles.main_container }>
+                <FilmList
+                    films={this.props.favoritesFilm} // C'est bien le component Search qui récupère les films depuis l'API et on les transmet ici pour que le component FilmList les affiche
+                    navigation={this.props.navigation} // Ici on transmet les informations de navigation pour permettre au component FilmList de naviguer vers le détail d'un film
+                    favoriteList={true} // Ici on est bien dans le cas de la liste des films favoris. Ce booléen à true permettra d'empêcher de lancer la recherche de plus de films après un scroll lorsqu'on est sur la vue Favoris.
+                    //page={this.page}
+                    //totalPages={this.total_pages} // les infos page et totalPages vont être utile, côté component FilmList, pour ne pas déclencher l'évènement pour charger plus de film si on a atteint la dernière page
+                    //loadFilms={this._loadFilms}
+                />
+            </View>
+        );
     }
 }
+
+//StyleSheet.create() améliore les performances de l'appliaction
+const styles = StyleSheet.create({
+    main_container : {
+        flex: 1,
+    }
+})
 
 const mapStateToProps = (state) => {
     //return state
@@ -18,9 +42,5 @@ const mapStateToProps = (state) => {
             favoritesFilm: state.favoritesFilm
         }
     }
-
-const styles = StyleSheet.create({
-
-})
 
 export default connect(mapStateToProps)(Favorites)

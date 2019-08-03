@@ -19,10 +19,17 @@ const SearchStackNavigator = createStackNavigator({
 
 const FavoritesStackNavigator = createStackNavigator({
     Favorites: {
-        screen: Favorites
+        screen: Favorites,
+        navigationOptions: {
+            title: 'Films Favoris'
+        }
     },
     FilmDetail: {
-        screen : FilmDetail
+        screen : FilmDetail,
+        navigationOptions: {
+            title: 'Détail du film'
+        }
+
     }
 })
 
