@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Text, ActivityIndicator,ScrollView, Image, Button} from 'react-native'
+import { StyleSheet, View, Text, ActivityIndicator,ScrollView, Image, Share, Platform, Button} from 'react-native'
 import { getFilmDetailFromApi,getImageFromApi } from '../API/TMDBApi'
 import moment from 'moment'
 import numeral from 'numeral'
@@ -29,9 +29,7 @@ class FilmDetail extends React.Component {
 
     //display poster_path if the film doesn't have backdrop_path
     _displayLinkImage(film) {
-        console.log(film)
         if(film.backdrop_path === null){
-            console.log("passage")
             return film.poster_path
         }else{
             return film.backdrop_path
@@ -122,12 +120,41 @@ class FilmDetail extends React.Component {
         this.props.dispatch(action)
     }
 
+    //la fonction de partage
+    _shareFilm() {
+        //équivaut à const film = this.state.film
+        const {film} = this.state
+        Share.share({title: film.title, message: film.overview})
+    }
+
+    //création du bouton de partage
+    _displayFloatingActionButton() {
+        const {film} = this.state
+        console.log(film)
+        if (film !== undefined && Platform.OS === 'android') {
+            console.log("histoire")
+            return (
+                //obligé de rajouter une view sinon le position absolute ne fonctionne pas
+                <View
+                    style={styles.share_touchable_floatingactionbutton} >
+                    <TouchableOpacity
+                        onPress={() => this._shareFilm()} >
+                        <Image 
+                            style={styles.share_image}
+                            source={require('../Images/ic_share.png')}
+                        />
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+    }
     render() {
         //console.log(this.props)
         return (
             <View style={styles.main_container}>
                 {this._displayLoading()}
                 {this._displayFilm()}
+                {this._displayFloatingActionButton()}
             </View>
         )
     }
@@ -157,7 +184,7 @@ const styles = StyleSheet.create({
         top: 0,
         bottom: 0,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     scrollview_container: {
         flex: 1,
@@ -178,7 +205,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         marginLeft:5,
         marginRight: 5,
-        marginTop: 10,
+        marginTop: 10, 
         marginBottom: 10,
         color: "#000000",
     },
@@ -196,6 +223,22 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         marginRight: 5,
         marginTop: 5
+    },
+    share_touchable_floatingactionbutton: {
+        position: 'absolute',
+        width: 60,
+        height: 60,
+        right: 30,
+        bottom: 30,
+        borderRadius: 30,
+        backgroundColor: '#e91e63',
+        //pour aligner le contenu à l'intérieur qui est l'image share
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    share_image: {
+        width: 30,
+        height: 30
     }
 })
 
