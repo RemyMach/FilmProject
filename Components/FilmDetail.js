@@ -11,8 +11,7 @@ class FilmDetail extends React.Component {
     static navigationOptions = ({ navigation }) => {
         const {params} = navigation.state
         //On accède à la fonction shareFilm et au film via les paramètres qu'on a ajouté à la navigation
-        //normalemet c'est pour ios là pour ce commmit j'ai mit android et j'ai adapté au prochain ce sera ios
-        if (params.film != undefined && Platform.OS === 'android'){
+        if (params.film != undefined && Platform.OS === 'ios'){
             return {
                 //on a besoin d'afficher une image, il faut donc passe par une Touchabe une fois
                 headerRight: <TouchableOpacity 
@@ -271,13 +270,7 @@ const styles = StyleSheet.create({
         height: 30
     },
     share_tochable_headerrightbutton: {
-        width: 50,
-        height: 50,
-        margin: 8,
-        backgroundColor: '#e91e63',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 30
+        margin: 8
     }
 })
 
