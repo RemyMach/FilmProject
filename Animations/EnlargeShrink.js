@@ -8,46 +8,31 @@ class EnlargeShrink extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            sizeFavoriteHeart: new Animated.Value(80),
-            sizeNotFavoriteHeart: new Animated.Value(40)
+            viewSize: new Animated.Value(this._getSize())
         }
         console.log("je suis " + this.props.shouldEnlarge)
     }
 
-    componentDidUpdate() {
-        if(this.props.shouldEnlarge === true){
-            Animated.timing(
-                this.state.sizeNotFavoriteHeart,
-                {
-                    toValue: 80,
-                    duration: 5000
-                }
-            ).start()
+    _getSize(){
+        if(this.props.shouldEnlarge){
+            return 80
         }else{
-            Animated.timing(
-                this.state.sizeFavoriteHeart,
-                {
-                    toValue: 40,
-                    duration: 1000
-                }
-            ).start()
+            return 40
         }
     }
+    componentDidUpdate() {
 
-
-
-    _displayAnimation(){
-        if(this.props.shouldEnlarge !== false){
-            return styles.Animation_Not_Favorite_Heart
-        }else{
-            return styles.Animation_Favorite_Heart
-        }
-
+        Animated.spring(
+            this.state.viewSize,
+            {
+                toValue: this._getSize()
+            }
+        ).start()
     }
 
     render() {
         return (
-            <Animated.View style={this._displayAnimation()}>
+            <Animated.View style={{ width: this.state.viewSize, height: this.state.viewSize}}>
                 {this.props.children}
             </Animated.View>
         )
