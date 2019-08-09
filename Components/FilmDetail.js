@@ -4,7 +4,8 @@ import { getFilmDetailFromApi,getImageFromApi } from '../API/TMDBApi'
 import moment from 'moment'
 import numeral from 'numeral'
 import { connect } from 'react-redux'
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import EnlargeShrink from '../Animations/EnlargeShrink'
 
 class FilmDetail extends React.Component {
 
@@ -135,12 +136,19 @@ class FilmDetail extends React.Component {
         if(this.props.favoritesFilm.findIndex(item => item.id === this.state.film.id) !== -1){
             //Film dans nos favoris
             sourceImage = require('../Images/ic_favorite.png')
+            var shouldEnlarge = true
+        }else{
+            var shouldEnlarge = false
         }
         return (
-            <Image
-                style={styles.favorite_image_heart}
-                source={sourceImage}
-            />
+            <EnlargeShrink
+                shouldEnlarge={shouldEnlarge}
+            >
+                <Image
+                    style={styles.favorite_image_heart}
+                    source={sourceImage}
+                />
+            </EnlargeShrink>
         )
     }
     _toggleFavorite(){
@@ -159,9 +167,8 @@ class FilmDetail extends React.Component {
     //création du bouton de partage
     _displayFloatingActionButton() {
         const {film} = this.state
-        console.log(film)
+        //console.log(film)
         if (film !== undefined && Platform.OS === 'android') {
-            console.log("histoire")
             return (
                 //obligé de rajouter une view sinon le position absolute ne fonctionne pas
                 <View
@@ -223,8 +230,9 @@ const styles = StyleSheet.create({
         margin: 2
     },
     favorite_image_heart: {
-        width: 45,
-        height: 40
+        flex: 1,
+        width: null,
+        height: null
     },
     title_film: {
         textAlign: "center",

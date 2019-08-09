@@ -30,7 +30,7 @@ class Favorites extends React.Component {
 //StyleSheet.create() améliore les performances de l'appliaction
 const styles = StyleSheet.create({
     main_container : {
-        flex: 1,
+        flex: 1
     }
 })
 

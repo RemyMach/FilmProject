@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
 import { getImageFromApi } from '../API/TMDBApi'
 import FadeIn from '../Animations/FadeIn'
+import EnlargeShrink from "../Animations/EnlargeShrink"
 
 class FilmItem extends React.Component {
 
@@ -16,16 +17,6 @@ class FilmItem extends React.Component {
     }
   }
 
-  _displayImageFromApiWhenSearch(linkImage){
-    if(this.props.favoriteList !== true){
-      return(
-        <Image
-          style={styles.image}
-          source={{uri: getImageFromApi(linkImage)}}
-        />
-      )
-    }
-  }
 
     render() {
         const displayDetailForFilm = this.props.displayDetailForFilm // équivaut pour les deux lignes à const { film, displayDetailForFilm } = this.props 
@@ -64,9 +55,9 @@ const styles = StyleSheet.create({
     
   },
   favorite_image_heart: {
-    width: 25,
-    height: 25,
-    marginRight: 5
+      width: 25,
+      height: 25,
+      marginRight: 5
   },
   main_container: {
     height: 190,
