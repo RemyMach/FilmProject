@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 
 class EnlargeShrink extends React.Component {
 
-
     constructor(props){
         super(props)
         this.state = {
@@ -20,6 +19,7 @@ class EnlargeShrink extends React.Component {
             return 40
         }
     }
+
     componentDidUpdate() {
 
         Animated.spring(
