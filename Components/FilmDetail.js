@@ -1,10 +1,9 @@
 import React from 'react'
-import { StyleSheet, View, Text, ActivityIndicator,ScrollView, Image, Share, Platform, Button} from 'react-native'
+import { StyleSheet, View, Text, ActivityIndicator,ScrollView, Image, Share, Platform, TouchableOpacity} from 'react-native'
 import { getFilmDetailFromApi,getImageFromApi } from '../API/TMDBApi'
 import moment from 'moment'
 import numeral from 'numeral'
 import { connect } from 'react-redux'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import EnlargeShrink from '../Animations/EnlargeShrink'
 
 class FilmDetail extends React.Component {
@@ -151,7 +150,7 @@ class FilmDetail extends React.Component {
         )
     }
     _toggleFavorite(){
-        console.log('jean');
+        console.log('jean')
         //Définition de l'action ici
         const action = { type: "TOGGLE_FAVORITE", value: this.state.film }
         this.props.dispatch(action)

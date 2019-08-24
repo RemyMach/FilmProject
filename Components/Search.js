@@ -69,7 +69,7 @@ class Search extends React.Component {
 
     render() {
         //console.log("je rerend " + this.total_pages);
-        //console.log("------------------------------------------------------------------------------------------------");
+        console.log("------------------------------------------------------------------------------------------------");
         return (
             <View style={ styles.main_container }>
                 <TextInput placeholder="Titre du film" 
