@@ -151,6 +151,7 @@ class FilmDetail extends React.Component {
         )
     }
     _toggleFavorite(){
+        console.log('jean');
         //Définition de l'action ici
         const action = { type: "TOGGLE_FAVORITE", value: this.state.film }
         this.props.dispatch(action)
