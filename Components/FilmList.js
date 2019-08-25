@@ -54,7 +54,7 @@ const mapStateToProps = (state) => {
 //on ne retourne que l'info du state global qui nous intéresse
 //le nom de la variable n'est pas important on peut la nommer comme on veut
     return {
-        favoritesFilm: state.favoritesFilm
+        favoritesFilm: state.toggleFavorite.favoritesFilm
     }
 }
 

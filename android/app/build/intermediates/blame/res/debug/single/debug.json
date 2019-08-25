@@ -1208,6 +1208,10 @@
         "source": "/Users/remy/.gradle/caches/transforms-1/files-1.1/appcompat-1.0.0.aar/22aad0fd8756099c55235578199d2087/res/layout/abc_screen_toolbar.xml"
     },
     {
+        "merged": "/Users/remy/Documents/react_native/FilmProject/android/app/build/intermediates/res/merged/debug/layout_list_item.xml.flat",
+        "source": "/Users/remy/Documents/react_native/FilmProject/node_modules/react-native-image-picker/android/build/intermediates/packaged_res/debug/layout/list_item.xml"
+    },
+    {
         "merged": "/Users/remy/Documents/react_native/FilmProject/android/app/build/intermediates/res/merged/debug/drawable-hdpi-v4_abc_textfield_activated_mtrl_alpha.9.png.flat",
         "source": "/Users/remy/.gradle/caches/transforms-1/files-1.1/appcompat-1.0.0.aar/22aad0fd8756099c55235578199d2087/res/drawable-hdpi-v4/abc_textfield_activated_mtrl_alpha.9.png"
     },
@@ -1366,6 +1370,10 @@
     {
         "merged": "/Users/remy/Documents/react_native/FilmProject/android/app/build/intermediates/res/merged/debug/drawable_abc_list_selector_holo_light.xml.flat",
         "source": "/Users/remy/.gradle/caches/transforms-1/files-1.1/appcompat-1.0.0.aar/22aad0fd8756099c55235578199d2087/res/drawable/abc_list_selector_holo_light.xml"
+    },
+    {
+        "merged": "/Users/remy/Documents/react_native/FilmProject/android/app/build/intermediates/res/merged/debug/xml_provider_paths.xml.flat",
+        "source": "/Users/remy/Documents/react_native/FilmProject/node_modules/react-native-image-picker/android/build/intermediates/packaged_res/debug/xml/provider_paths.xml"
     },
     {
         "merged": "/Users/remy/Documents/react_native/FilmProject/android/app/build/intermediates/res/merged/debug/anim_catalyst_fade_out.xml.flat",
