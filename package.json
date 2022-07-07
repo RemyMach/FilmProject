@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "jetifier": "^1.6.4",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "numeral": "^2.0.6",
     "react": "16.8.3",
     "react-dom": "^16.8.6",
